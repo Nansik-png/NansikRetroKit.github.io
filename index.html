@@ -19,15 +19,19 @@
   </header>
 
   <!-- Hero -->
-  <section class="h-[80vh] flex flex-col justify-center items-center text-center">
-    <h2 class="text-5xl font-bold mb-4"><span style="color:blue">SPRING DROP</span></h2>
-    <p class="text-gray-600 mb-6"><span style="color:blue">Limited Pieces Available</span></p>
-    <!-- SHOP NOW BUTTON -->
+  <section class="relative h-[80vh] flex flex-col justify-center items-center text-center">
+  
+  <!-- Cherry Blossom Background -->
+  <img src="pngtree-cherry-blossom-tree-transparent-background-png-image_13279192.png" class="absolute inset-0 w-full h-full object-contain pointer-events-none z-0">
+  
+  <!-- Hero Text -->
+  <h2 class="text-5xl font-bold mb-4 z-10 relative">SPRING DROP</h2>
+  <p class="text-gray-600 mb-6 z-10 relative">Limited Pieces Available</p>
   <button onclick="window.location.href='shop.html'" 
-          class="border px-6 py-2 hover:bg-black hover:text-white transition">
+          class="border px-6 py-2 hover:bg-black hover:text-white transition z-10 relative">
     Shop Now
-    </button>
-  </section>
+  </button>
+</section>
 
   <!-- Products -->
   <section class="px-8 py-12">

@@ -39,19 +39,39 @@
   <section class="px-8 py-12">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
 
-      <div class="group">
-        <img src="Photoroom_20250318_152243.JPG" class="w-full mb-3 rounded-2xl shadow">
-        <p class="font-medium"><span style="color:black">C.Ronaldo Sporting 02-03</span></p>
-        <button style="color:red; border:1px solid red; cursor:not-allowed;">SOLD OUT</button>
-      </div>
+      <div class="relative group">
 
-      <div class="group">
-        <img src="Photoroom_20250318_152823.JPG" class="w-full mb-3 rounded-2xl shadow">
-        <p class="font-medium"><span style="color:black">Juventus 97-98</span></p>
-        <button style="color:red; border:1px solid red; cursor:not-allowed;">SOLD OUT</button>
-      </div>
+  <img src="Photoroom_20250318_152243.JPG" class="w-full h-64 object-cover rounded-2xl shadow">
+
+  <!-- Dark overlay -->
+  <div class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl"></div>
+
+  <!-- Center content -->
+  <div class="absolute inset-0 flex flex-col justify-center items-center text-center">
+    <p class="text-white text-lg font-bold mb-2">C.Ronaldo Sporting 02-03</p>
+    <button class="border border-red-500 text-red-500 px-4 py-1 text-sm cursor-not-allowed">
+      SOLD OUT
+    </button>
+  </div>
+
+</div>
 
       <div class="relative group">
+
+  <img src="Photoroom_20250318_152823.JPG" class="w-full h-64 object-cover rounded-2xl shadow">
+
+  <!-- Dark overlay -->
+  <div class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl"></div>
+
+  <!-- Center content -->
+  <div class="absolute inset-0 flex flex-col justify-center items-center text-center">
+    <p class="text-white text-lg font-bold mb-2">Juventus 97-98</p>
+    <button class="border border-red-500 text-red-500 px-4 py-1 text-sm cursor-not-allowed">
+      SOLD OUT
+    </button>
+  </div>
+
+</div>
 
   <!-- Image -->
   <img src="IMG_3079.jpeg" class="w-full h-64 object-cover rounded-2xl shadow">

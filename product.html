@@ -36,20 +36,22 @@
   </section>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const name = params.get("name");
-    const image = params.get("image");
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get("name");
+  const image = params.get("image");
+  const desc = params.get("desc");
 
-    document.getElementById("productName").innerText = name;
-    document.getElementById("productImage").src = image;
+  document.getElementById("productName").innerText = name;
+  document.getElementById("productImage").src = image;
+  document.getElementById("productDesc").innerText = desc;
 
-    document.getElementById("addToCart").onclick = function () {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      cart.push({ name, image });
-      localStorage.setItem("cart", JSON.stringify(cart));
-      alert("Added to cart!");
-    };
-  </script>
-
+  document.getElementById("addToCart").onclick = function () {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push({ name, image });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Added to cart!");
+  };
+</script>
+  
 </body>
 </html>

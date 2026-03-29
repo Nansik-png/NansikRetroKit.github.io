@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product</title>
+  <title>Product - Nansik Retro Kit</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-black font-sans">
@@ -11,7 +11,7 @@
   <!-- Header -->
   <header class="flex justify-between items-center px-8 py-4 border-b">
     <h1 class="text-xl tracking-widest font-semibold">NRK</h1>
-    <a href="shop.html" class="text-sm">BACK</a>
+    <a href="shop.html" class="text-sm hover:underline">BACK</a>
   </header>
 
   <!-- Product Layout -->
@@ -23,12 +23,10 @@
     <!-- Info -->
     <div class="flex flex-col justify-center">
       <h2 id="productName" class="text-3xl font-bold mb-4"></h2>
-      <p class="text-gray-600 mb-6">
-        Premium retro jersey. High quality stitching and perfect for everyday wear or match day.
-      </p>
+      <p id="productDesc" class="text-gray-600 mb-6"></p>
 
       <!-- Add to Cart -->
-      <button id="addToCart" class="border px-6 py-3 font-semibold hover:bg-black hover:text-white transition">
+      <button id="addToCart" class="border px-6 py-3 font-semibold hover:bg-black hover:text-white transition cursor-pointer">
         Add to Cart
       </button>
     </div>
@@ -36,22 +34,25 @@
   </section>
 
   <script>
-  const params = new URLSearchParams(window.location.search);
-  const name = params.get("name");
-  const image = params.get("image");
-  const desc = params.get("desc");
+    // Grab URL parameters
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get("name");
+    const image = params.get("image");
+    const desc = params.get("desc");
 
-  document.getElementById("productName").innerText = name;
-  document.getElementById("productImage").src = image;
-  document.getElementById("productDesc").innerText = desc;
+    // Fill in content dynamically
+    document.getElementById("productName").innerText = name;
+    document.getElementById("productImage").src = image;
+    document.getElementById("productDesc").innerText = decodeURIComponent(desc);
 
-  document.getElementById("addToCart").onclick = function () {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart.push({ name, image });
-    localStorage.setItem("cart", JSON.stringify(cart));
-    alert("Added to cart!");
-  };
-</script>
-  
+    // Add to cart functionality
+    document.getElementById("addToCart").onclick = function () {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push({ name, image, desc });
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(`${name} added to cart!`);
+    };
+  </script>
+
 </body>
 </html>

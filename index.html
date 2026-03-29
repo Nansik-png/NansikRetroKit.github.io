@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><span style="color:black">Nansik Retro Kit</span></title>
+  <title>Nansik Retro Kit</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-black font-sans">
 
   <!-- Header -->
   <header class="flex justify-between items-center px-8 py-4 border-b">
-    <h1 class="text-xl tracking-widest font-semibold"><span style="color:black">Nansik Retro Kit</span></h1>
+    <h1 class="text-xl tracking-widest font-semibold">Nansik Retro Kit</h1>
     <nav class="space-x-6 text-sm">
       <a href="shop.html" class="hover:underline">Shop</a>
       <a href="about.html" class="hover:underline">About</a>
@@ -20,82 +20,76 @@
 
   <!-- Hero -->
   <section class="relative h-[80vh] flex flex-col justify-center items-center text-center">
-  
-  <!-- Cherry Blossom Background -->
-  <img src="pngtree-cherry-blossom-tree-transparent-background-png-image_13279192.png" class="absolute inset-0 w-full h-full object-contain pointer-events-none z-0">
-  
-  <!-- Hero Text -->
-  <h2 class="text-5xl font-bold mb-4 z-10 relative">SPRING DROP</h2>
-  <p class="text-gray-900 font-semibold mb-6 z-10 relative drop-shadow-md">
-    Limited Pieces Available
-  </p>
-  <button onclick="window.location.href='shop.html'" 
-          class="border px-6 py-2 font-semibold hover:bg-black hover:text-white transition z-10 relative drop-shadow-md">
-    Shop Now
-  </button>
-</section>
+    <!-- Cherry Blossom Background -->
+    <img src="pngtree-cherry-blossom-tree-transparent-background-png-image_13279192.png" class="absolute inset-0 w-full h-full object-contain pointer-events-none z-0">
+
+    <!-- Hero Text -->
+    <h2 class="text-5xl font-bold mb-4 z-10 relative">SPRING DROP</h2>
+    <p class="text-gray-900 font-semibold mb-6 z-10 relative drop-shadow-md">
+      Limited Pieces Available
+    </p>
+    <button onclick="window.location.href='shop.html'" 
+            class="border px-6 py-2 font-semibold hover:bg-black hover:text-white transition z-10 relative drop-shadow-md">
+      Shop Now
+    </button>
+  </section>
 
   <!-- Products -->
   <section class="px-8 py-12">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
 
+      <!-- Product 1: SOLD OUT -->
       <div class="relative group">
+        <img src="Photoroom_20250318_152243.JPG" class="w-full h-64 object-cover rounded-2xl shadow">
 
-  <img src="Photoroom_20250318_152243.JPG" class="w-full h-64 object-cover rounded-2xl shadow">
+        <!-- Dark overlay -->
+        <div class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl"></div>
 
-  <!-- Dark overlay -->
-  <div class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl"></div>
+        <!-- Center content -->
+        <div class="absolute inset-0 flex flex-col justify-center items-center text-center">
+          <p class="text-white text-lg font-bold mb-2 drop-shadow-lg">C.Ronaldo Sporting 02-03</p>
+          <button class="border border-red-500 text-red-500 px-4 py-1 text-sm cursor-not-allowed">
+            SOLD OUT
+          </button>
+        </div>
+      </div>
 
-  <!-- Center content -->
-  <div class="absolute inset-0 flex flex-col justify-center items-center text-center">
-    <p class="text-white text-lg font-bold mb-2">C.Ronaldo Sporting 02-03</p>
-    <button class="border border-red-500 text-red-500 px-4 py-1 text-sm cursor-not-allowed">
-      SOLD OUT
-    </button>
-  </div>
-
-</div>
-
+      <!-- Product 2: Buyable -->
       <div class="relative group">
+        <img src="IMG_3076.jpeg" class="w-full h-64 object-cover rounded-2xl shadow">
 
-  <img src="IMG_3076.jpeg" class="w-full h-64 object-cover rounded-2xl shadow">
+        <!-- Center content -->
+        <div class="absolute inset-0 flex flex-col justify-center items-center text-center">
+          <p class="text-white text-lg font-bold mb-2 drop-shadow-lg">KAKA AC Milan 06-07</p>
+          <button 
+            onclick="window.location.href='product.html?name=KAKA%20AC%20Milan%2006-07&image=IMG_3076.jpeg&desc=KAKA%20AC%20Milan%2006-07%20%7C%20Price:%20$42.99%20%7C%20Model:%20N/A'"
+            class="border border-white text-white px-4 py-1 text-sm hover:bg-white hover:text-black transition cursor-pointer">
+            Buy
+          </button>
+        </div>
+      </div>
 
-  <!-- CENTERED TEXT + BUTTON -->
-  <div class="absolute inset-0 flex flex-col justify-center items-center text-center">
-    <p class="text-white text-lg font-bold mb-2 drop-shadow-lg">
-      KAKA AC Milan 06-7
-    </p>
-    <button 
-  onclick="window.location.href='product.html?name=KAKA AC Milan 06-07&image=IMG_3076.jpeg'" 
-  class="border border-white text-white px-4 py-1 text-sm hover:bg-white hover:text-black transition">
-  Buy
-</button>
-  </div>
+      <!-- Product 3: Buyable -->
+      <div class="relative group">
+        <img src="IMG_3079.jpeg" class="w-full h-64 object-cover rounded-2xl shadow">
 
-</div>
-
-    <div class="relative group">
-  <img src="IMG_3079.jpeg" class="w-full h-64 object-cover rounded-2xl shadow">
-
-  <!-- CENTERED TEXT + BUTTON -->
-  <div class="absolute inset-0 flex flex-col justify-center items-center text-center">
-    <p class="text-white text-lg font-bold mb-2 drop-shadow-lg">
-      Juventus Pink
-    </p>
-   <button 
-  onclick="window.location.href='product.html?name=Juventus Pink&image=IMG_3079.jpeg&desc=Juventus Pink | Size: SM | Price: $29.99 | Model: N/A'"
-  class="border border-white text-white px-4 py-1 text-sm hover:bg-white hover:text-black transition">
-  Buy
-</button>
-  </div>
-</div>
+        <!-- Center content -->
+        <div class="absolute inset-0 flex flex-col justify-center items-center text-center">
+          <p class="text-white text-lg font-bold mb-2 drop-shadow-lg">Juventus Pink</p>
+          <button 
+            onclick="window.location.href='product.html?name=Juventus%20Pink&image=IMG_3079.jpeg&desc=Juventus%20Pink%20%7C%20Price:%20$29.99%20%7C%20Model:%20N/A'"
+            class="border border-white text-white px-4 py-1 text-sm hover:bg-white hover:text-black transition cursor-pointer">
+            Buy
+          </button>
+        </div>
+      </div>
 
     </div>
   </section>
 
   <!-- Footer -->
   <footer class="border-t py-6 text-center text-sm text-gray-500">
-    © <span style="color:blue">2026 Nansik Retro Kit</span>. All rights reserved.
+    © <span class="text-blue-500">2026 Nansik Retro Kit</span>. All rights reserved.
   </footer>
 
 </body>

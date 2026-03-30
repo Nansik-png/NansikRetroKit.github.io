@@ -29,6 +29,11 @@
       <button id="addToCart" class="border px-6 py-3 font-semibold hover:bg-black hover:text-white transition cursor-pointer">
         Add to Cart
       </button>
+
+      <!-- Go to Cart button (hidden by default) -->
+      <button id="goToCart" class="border px-6 py-3 font-semibold mt-4 hover:bg-black hover:text-white transition cursor-pointer hidden">
+        Go to Cart
+      </button>
     </div>
 
   </section>
@@ -45,12 +50,23 @@
     document.getElementById("productImage").src = image;
     document.getElementById("productDesc").innerText = decodeURIComponent(desc);
 
+    const addToCartBtn = document.getElementById("addToCart");
+    const goToCartBtn = document.getElementById("goToCart");
+
     // Add to cart functionality
-    document.getElementById("addToCart").onclick = function () {
+    addToCartBtn.onclick = function () {
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
       cart.push({ name, image, desc });
       localStorage.setItem("cart", JSON.stringify(cart));
       alert(`${name} added to cart!`);
+
+      // Show the "Go to Cart" button
+      goToCartBtn.classList.remove("hidden");
+    };
+
+    // Go to cart page
+    goToCartBtn.onclick = function () {
+      window.location.href = "cart.html";
     };
   </script>
 

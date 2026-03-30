@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-black font-sans">
+
+  <header class="flex justify-between items-center px-8 py-4 border-b">
+    <h1 class="text-xl tracking-widest font-semibold">CART</h1>
+    <a href="shop.html">Back to Shop</a>
+  </header>
+
+  <section class="max-w-4xl mx-auto px-6 py-10" id="cartContainer"></section>
+
+  <div class="text-center pb-10">
+    <button onclick="checkout()" class="border px-6 py-2 hover:bg-black hover:text-white transition">
+      Checkout (DM Instagram)
+    </button>
+  </div>
+
+  <script>
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const container = document.getElementById("cartContainer");
+
+    if (cart.length === 0) {
+      container.innerHTML = "<p>Your cart is empty</p>";
+    } else {
+      cart.forEach(item => {
+        container.innerHTML += `
+          <div class="flex items-center gap-4 mb-4">
+            <img src="${item.image}" class="w-20 h-20 object-cover">
+            <p>${item.name}</p>
+          </div>
+        `;
+      });
+    }
+
+    function checkout() {
+      let message = "I want to buy: ";
+      cart.forEach(item => {
+        message += item.name + ", ";
+      });
+
+      window.open("https://instagram.com/nansik_retrokit", "_blank");
+    }
+  </script>
+
+</body>
+</html>

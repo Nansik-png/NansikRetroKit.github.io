@@ -61,8 +61,92 @@ document.getElementById("checkoutBtn").onclick = () => {
   alert("Order message copied! Paste it in Instagram DM.");
 
   // Open Instagram
-  window.open("https://www.instagram.com/direct/t/17845319067422620/", "_blank");
+  window.open("https://www.instagram.com/nansik_retrokit", "_blank");
 };
+</script>
+  
+  <script>
+  // Load cart
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const container = document.getElementById("cartContainer");
+  const totalPriceEl = document.getElementById("totalPrice");
+
+  // Calculate total
+  function calculateTotal() {
+    let total = 0;
+    cart.forEach(item => {
+      const match = item.desc.match(/Price:\s*\$(\d+(\.\d+)?)/);
+      if (match) total += parseFloat(match[1]);
+    });
+    totalPriceEl.innerText = `$${total.toFixed(2)}`;
+    return total;
+  }
+
+  // Render cart
+  function renderCart() {
+    container.innerHTML = "";
+
+    if (cart.length === 0) {
+      container.innerHTML = "<p>Your cart is empty.</p>";
+      totalPriceEl.innerText = "$0.00";
+      return;
+    }
+
+    cart.forEach((item, i) => {
+      const div = document.createElement("div");
+      div.className = "flex items-center gap-4 p-2 border rounded-md";
+
+      div.innerHTML = `
+        <img src="${item.image}" class="w-20 h-20 object-cover rounded">
+        <div class="flex-1">
+          <p class="font-semibold">${item.name}</p>
+          <p class="text-gray-500 text-sm">${item.desc}</p>
+        </div>
+        <button class="border px-2 py-1 text-sm hover:bg-red-500 hover:text-white">
+          Remove
+        </button>
+      `;
+
+      // Remove button
+      div.querySelector("button").onclick = () => {
+        cart.splice(i, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        renderCart();
+      };
+
+      container.appendChild(div);
+    });
+
+    calculateTotal();
+  }
+
+  renderCart();
+
+  // ✅ CHECKOUT BUTTON (MAIN PART YOU WANTED)
+  document.getElementById("checkoutBtn").onclick = () => {
+    if (cart.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+
+    let message = "Hello! I want to order:\n\n";
+
+    cart.forEach(item => {
+      message += `• ${item.name}\n`;
+      message += `${item.desc}\n\n`;
+    });
+
+    const total = calculateTotal();
+    message += `Total: $${total.toFixed(2)}\n\nThank you!`;
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(message);
+
+    alert("Order copied! Paste it in Instagram DM.");
+
+    // Open Instagram
+    window.open("https://instagram.com/nansik_retrokit", "_blank");
+  };
 </script>
 
 </body>

@@ -96,5 +96,10 @@
     © <span class="text-blue-500">2026 Nansik Retro Kit</span>. All rights reserved.
   </footer>
 
+  <script>
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  document.getElementById("cartCount").innerText = cart.length;
+</script>
+
 </body>
 </html>

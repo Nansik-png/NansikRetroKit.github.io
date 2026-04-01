@@ -6,83 +6,73 @@
   <title>Shop - Nansik Retro Kit</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="text-white font-sans bg-cover bg-center bg-no-repeat"
-      style="background-image: url('pngtree-cherry-blossom-tree-spring-plant-flower-petals-png-image_6748513.jpg.png');">
 
-  <!-- Dark overlay -->
-  <div class="fixed inset-0 bg-black/50 -z-10"></div>
+<body class="bg-white text-black font-sans">
+
+  <!-- 🌸 Cherry Blossom Tree (BACKGROUND ELEMENT) -->
+  <img src="pngtree-cherry-blossom-tree-spring-plant-flower-petals-png-image_6748513.jpg.png"
+       class="fixed bottom-0 right-0 w-[1000px] opacity-70 pointer-events-none z-0">
 
   <!-- Header -->
-  <header class="flex justify-between items-center px-6 py-4">
+  <header class="relative z-10 flex justify-between items-center px-6 py-4">
     <h1 class="text-lg tracking-widest">NRK</h1>
     <a href="index.html" class="text-sm">BACK</a>
   </header>
 
   <!-- Shop Title -->
-  <section class="text-center py-10">
+  <section class="relative z-10 text-center py-10">
     <h2 class="text-2xl tracking-wide">ALL PRODUCTS</h2>
   </section>
 
-  <!-- Products Grid (Yeezy minimal style) -->
-  <section class="px-6 pb-16">
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+  <!-- Products Grid -->
+  <section class="relative z-10 px-6 pb-16">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
 
-    <!-- Product 1 -->
-    <div class="flex flex-col text-center group">
-      <div class="overflow-hidden rounded-2xl shadow">
-        <img src="Photoroom_20250318_152243.JPG" 
-             class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-300">
+      <!-- Product 1 -->
+      <div class="flex flex-col text-center">
+        <img src="Photoroom_20250318_152243.JPG" class="w-full h-60 object-cover rounded-2xl shadow">
+        <p class="mt-2 text-sm">C.Ronaldo Sporting 02-03</p>
+        <p class="text-sm text-gray-500">$39.99</p>
+        <p class="text-xs mt-1">SOLD OUT</p>
       </div>
-      <p class="mt-3 text-sm font-medium">C.Ronaldo Sporting 02-03</p>
-      <p class="text-sm text-gray-500">$39.99</p>
-      <p class="text-xs mt-1 text-red-500">SOLD OUT</p>
-    </div>
 
-    <!-- Product 2 -->
-    <div class="flex flex-col text-center group">
-      <div class="overflow-hidden rounded-2xl shadow">
-        <img src="Photoroom_20250318_152823.JPG" 
-             class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-300">
+      <!-- Product 2 -->
+      <div class="flex flex-col text-center">
+        <img src="Photoroom_20250318_152823.JPG" class="w-full h-60 object-cover rounded-2xl shadow">
+        <p class="mt-2 text-sm">Juventus 97-98</p>
+        <p class="text-sm text-gray-500">$39.99</p>
+        <p class="text-xs mt-1">SOLD OUT</p>
       </div>
-      <p class="mt-3 text-sm font-medium">Juventus 97-98</p>
-      <p class="text-sm text-gray-500">$39.99</p>
-      <p class="text-xs mt-1 text-red-500">SOLD OUT</p>
-    </div>
 
-    <!-- Product 3 -->
-    <div class="flex flex-col text-center group">
-      <div class="overflow-hidden rounded-2xl shadow">
-        <img src="IMG_3079.jpeg" 
-             class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-300">
+      <!-- Product 3 -->
+      <div class="flex flex-col text-center">
+        <img src="IMG_3079.jpeg" class="w-full h-60 object-cover rounded-2xl shadow">
+        <p class="mt-2 text-sm">Juventus Pink</p>
+        <p class="text-sm text-gray-500">$29.99</p>
+
+        <button 
+          onclick="window.location.href='product.html?name=' + encodeURIComponent('Juventus Pink') + '&image=' + encodeURIComponent('IMG_3079.jpeg') + '&desc=' + encodeURIComponent('Juventus Pink | Price: $29.99 | Model: N/A')"
+          class="border border-black text-black px-4 py-1 text-sm hover:bg-black hover:text-white transition mt-2">
+          Buy
+        </button>
       </div>
-      <p class="mt-3 text-sm font-medium">Juventus Pink</p>
-      <p class="text-sm text-gray-500">$29.99</p>
 
-      <button 
-        onclick="window.location.href='product.html?name=Juventus%20Pink&image=IMG_3079.jpeg&desc=Juventus%20Pink%20%7C%20Price:%20$29.99%20%7C%20Model:%20N/A'"
-        class="border border-black text-black px-4 py-2 text-sm mt-3 hover:bg-black hover:text-white transition">
-        Buy
-      </button>
-    </div>
+      <!-- Product 4 -->
+      <div class="flex flex-col text-center">
+        <img src="IMG_3076.jpeg" class="w-full h-60 object-cover rounded-2xl shadow">
+        <p class="mt-2 text-sm">KAKA AC Milan 06-07</p>
+        <p class="text-sm text-gray-500">$42.99</p>
 
-    <!-- Product 4 -->
-    <div class="flex flex-col text-center group">
-      <div class="overflow-hidden rounded-2xl shadow">
-        <img src="IMG_3076.jpeg" 
-             class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-300">
+        <button 
+          onclick="window.location.href='product.html?name=' + encodeURIComponent('KAKA AC Milan 06-07') + '&image=' + encodeURIComponent('IMG_3076.jpeg') + '&desc=' + encodeURIComponent('KAKA AC Milan 06-07 | Price: $42.99 | Model: N/A')"
+          class="border border-black text-black px-4 py-1 text-sm hover:bg-black hover:text-white transition mt-2">
+          Buy
+        </button>
       </div>
-      <p class="mt-3 text-sm font-medium">KAKA AC Milan 06-07</p>
-      <p class="text-sm text-gray-500">$42.99</p>
 
-      <button 
-        onclick="window.location.href='product.html?name=KAKA%20AC%20Milan%2006-07&image=IMG_3076.jpeg&desc=KAKA%20AC%20Milan%2006-07%20%7C%20Price:%20$42.99%20%7C%20Model:%20N/A'"
-        class="border border-black text-black px-4 py-2 text-sm mt-3 hover:bg-black hover:text-white transition">
-        Buy
-      </button>
     </div>
-
-  </div>
-</section>
+  </section>
 
 </body>
+</html>
 </html>

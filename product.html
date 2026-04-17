@@ -6,6 +6,7 @@
   <title>Product - Nansik Retro Kit</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-white text-black font-sans">
 
   <!-- Header -->
@@ -17,8 +18,24 @@
   <!-- Product Layout -->
   <section class="max-w-5xl mx-auto px-6 py-12 grid md:grid-cols-2 gap-10">
 
-    <!-- Image -->
-    <img id="productImage" class="w-full rounded-2xl shadow" alt="Product Image">
+    <!-- 🔥 IMAGE SLIDER -->
+    <div class="relative w-full">
+
+      <!-- Main Image -->
+      <img id="mainImage" class="w-full rounded-2xl shadow transition duration-300" alt="Product Image">
+
+      <!-- Arrows (hidden if only 1 image) -->
+      <button id="prevBtn"
+        class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white px-3 py-1 rounded shadow hidden">
+        ←
+      </button>
+
+      <button id="nextBtn"
+        class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white px-3 py-1 rounded shadow hidden">
+        →
+      </button>
+
+    </div>
 
     <!-- Info -->
     <div class="flex flex-col justify-center">
@@ -26,12 +43,14 @@
       <p id="productDesc" class="text-gray-600 mb-6"></p>
 
       <!-- Add to Cart -->
-      <button id="addToCart" class="border px-6 py-3 font-semibold hover:bg-black hover:text-white transition cursor-pointer">
+      <button id="addToCart"
+        class="border px-6 py-3 font-semibold hover:bg-black hover:text-white transition cursor-pointer">
         Add to Cart
       </button>
 
-      <!-- Go to Cart button (hidden by default) -->
-      <button id="goToCart" class="border px-6 py-3 font-semibold mt-4 hover:bg-black hover:text-white transition cursor-pointer hidden">
+      <!-- Go to Cart -->
+      <button id="goToCart"
+        class="border px-6 py-3 font-semibold mt-4 hover:bg-black hover:text-white transition cursor-pointer hidden">
         Go to Cart
       </button>
     </div>
@@ -39,32 +58,69 @@
   </section>
 
   <script>
-    // 1️⃣ Grab URL parameters
+    // 1️⃣ Get URL parameters
     const params = new URLSearchParams(window.location.search);
+
     const name = params.get("name") ? decodeURIComponent(params.get("name")) : "Unnamed Product";
-    const image = params.get("image") ? decodeURIComponent(params.get("image")) : "";
     const desc = params.get("desc") ? decodeURIComponent(params.get("desc")) : "No description available.";
 
-    // 2️⃣ Fill in page content dynamically
+    // 🔥 MULTIPLE IMAGES SUPPORT
+    const imagesParam = params.get("images");
+
+    let images = imagesParam
+      ? imagesParam.split(",").map(img => decodeURIComponent(img))
+      : [params.get("image") ? decodeURIComponent(params.get("image")) : ""];
+
+    let currentIndex = 0;
+
+    const mainImage = document.getElementById("mainImage");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    // Set initial content
+    mainImage.src = images[0];
     document.getElementById("productName").innerText = name;
-    document.getElementById("productImage").src = image;
     document.getElementById("productDesc").innerText = desc;
 
-    // 3️⃣ Add to Cart functionality
+    // Show arrows only if multiple images
+    if (images.length > 1) {
+      prevBtn.classList.remove("hidden");
+      nextBtn.classList.remove("hidden");
+    }
+
+    // Slider functions
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % images.length;
+      mainImage.src = images[currentIndex];
+    }
+
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      mainImage.src = images[currentIndex];
+    }
+
+    nextBtn.onclick = nextImage;
+    prevBtn.onclick = prevImage;
+
+    // 🛒 CART
     const addToCartBtn = document.getElementById("addToCart");
     const goToCartBtn = document.getElementById("goToCart");
 
     addToCartBtn.onclick = function () {
-      // Load existing cart or start new
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      cart.push({ name, image, desc });
+
+      cart.push({
+        name,
+        image: images[0],
+        desc
+      });
+
       localStorage.setItem("cart", JSON.stringify(cart));
 
-      alert(`${name} added to cart!`);
+      alert(name + " added to cart!");
       goToCartBtn.classList.remove("hidden");
     };
 
-    // 4️⃣ Go to cart page
     goToCartBtn.onclick = function () {
       window.location.href = "cart.html";
     };

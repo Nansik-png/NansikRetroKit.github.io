@@ -9,14 +9,25 @@
 
 <body class="bg-white text-black font-sans">
 
-  <!-- 🌸 Cherry Blossom Tree (BACKGROUND ELEMENT) -->
-  <img src="pngtree-cherry-blossom-tree-spring-plant-flower-petals-png-image_6748513.jpg.png"
-       class="fixed bottom-[-80px] left-0 w-[1400px] opacity-60 pointer-events-none z-0">
+  <!-- 🌸 Cherry Blossom Tree Background -->
+  <img 
+    src="pngtree-cherry-blossom-tree-spring-plant-flower-petals-png-image_6748513.jpg.png"
+    class="fixed bottom-[-80px] left-0 w-[1400px] opacity-60 pointer-events-none z-0"
+  >
 
   <!-- Header -->
   <header class="relative z-10 flex justify-between items-center px-6 py-4">
     <h1 class="text-lg tracking-widest">NRK</h1>
-    <a href="index.html" class="text-sm hover:underline">BACK</a>
+
+    <div class="flex items-center gap-6">
+      <a href="cart.html" class="text-sm hover:underline">
+        CART
+      </a>
+
+      <a href="index.html" class="text-sm hover:underline">
+        BACK
+      </a>
+    </div>
   </header>
 
   <!-- Shop Title -->
@@ -28,53 +39,103 @@
   <section class="relative z-10 px-6 pb-16">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
 
-      <!-- Product 1: SOLD OUT -->
+      <!-- PRODUCT 1 -->
       <div class="relative group">
-        <img src="Photoroom_20250318_152243.JPG" class="w-full h-60 object-cover rounded-2xl shadow">
+        <img 
+          src="Photoroom_20250318_152243.JPG"
+          class="w-full h-60 object-cover rounded-2xl shadow"
+        >
+
         <div class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl flex flex-col justify-center items-center">
-          <p class="text-white text-lg font-bold mb-2 drop-shadow-lg">C.Ronaldo Sporting 02-03</p>
+          <p class="text-white text-lg font-bold mb-2 drop-shadow-lg">
+            C.Ronaldo Sporting 02-03
+          </p>
+
           <button class="border border-red-500 text-red-500 px-4 py-1 text-sm cursor-not-allowed">
             SOLD OUT
           </button>
         </div>
       </div>
 
-      <!-- Product 2: SOLD OUT -->
+      <!-- PRODUCT 2 -->
       <div class="relative group">
-        <img src="Photoroom_20250318_152823.JPG" class="w-full h-60 object-cover rounded-2xl shadow">
+        <img 
+          src="Photoroom_20250318_152823.JPG"
+          class="w-full h-60 object-cover rounded-2xl shadow"
+        >
+
         <div class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl flex flex-col justify-center items-center">
-          <p class="text-white text-lg font-bold mb-2 drop-shadow-lg">Juventus 97-98</p>
+          <p class="text-white text-lg font-bold mb-2 drop-shadow-lg">
+            Juventus 97-98
+          </p>
+
           <button class="border border-red-500 text-red-500 px-4 py-1 text-sm cursor-not-allowed">
             SOLD OUT
           </button>
         </div>
       </div>
 
-      <!-- Product 3: BUYABLE -->
+      <!-- PRODUCT 3 -->
       <div class="relative group">
-        <img src="IMG_3079.jpeg" class="w-full h-60 object-cover rounded-2xl shadow">
-        <div class="absolute inset-0 flex flex-col justify-center items-center text-center">
-          <p class="text-white text-lg font-bold mb-2 drop-shadow-lg">Juventus Pink</p>
-          <p class="text-white text-sm mb-2">$29.99</p>
+        <img 
+          src="IMG_3079.jpeg"
+          class="w-full h-60 object-cover rounded-2xl shadow"
+        >
+
+        <div class="absolute inset-0 bg-black bg-opacity-30 rounded-2xl flex flex-col justify-center items-center text-center">
+
+          <p class="text-white text-lg font-bold mb-2 drop-shadow-lg">
+            Juventus Pink
+          </p>
+
+          <p class="text-white text-sm mb-3">
+            $29.99
+          </p>
+
           <button 
-            onclick="window.location.href='product.html?name=' + encodeURIComponent('Juventus Pink') + '&image=' + encodeURIComponent('IMG_3079.jpeg') + '&desc=' + encodeURIComponent('Juventus Pink | Price: $29.99 | Model: N/A')"
+            onclick="window.location.href='product.html?name=' + 
+            encodeURIComponent('Juventus Pink') + 
+            '&images=' + 
+            encodeURIComponent('IMG_3079.jpeg,juve-model.jpeg') + 
+            '&desc=' + 
+            encodeURIComponent('Juventus Pink | Price: $29.99 | Premium Retro Jersey')"
+
             class="border border-white text-white px-4 py-1 text-sm hover:bg-white hover:text-black transition">
             Buy
           </button>
+
         </div>
       </div>
 
-      <!-- Product 4: BUYABLE -->
+      <!-- PRODUCT 4 -->
       <div class="relative group">
-        <img src="IMG_3076.jpeg" class="w-full h-60 object-cover rounded-2xl shadow">
-        <div class="absolute inset-0 flex flex-col justify-center items-center text-center">
-          <p class="text-white text-lg font-bold mb-2 drop-shadow-lg">KAKA AC Milan 06-07</p>
-          <p class="text-white text-sm mb-2">$42.99</p>
+        <img 
+          src="IMG_3076.jpeg"
+          class="w-full h-60 object-cover rounded-2xl shadow"
+        >
+
+        <div class="absolute inset-0 bg-black bg-opacity-30 rounded-2xl flex flex-col justify-center items-center text-center">
+
+          <p class="text-white text-lg font-bold mb-2 drop-shadow-lg">
+            KAKA AC Milan 06-07
+          </p>
+
+          <p class="text-white text-sm mb-3">
+            $42.99
+          </p>
+
           <button 
-            onclick="window.location.href='product.html?name=' + encodeURIComponent('KAKA AC Milan 06-07') + '&image=' + encodeURIComponent('IMG_3076.jpeg') + '&desc=' + encodeURIComponent('KAKA AC Milan 06-07 | Price: $42.99 | Model: N/A')"
+            onclick="window.location.href='product.html?name=' + 
+            encodeURIComponent('KAKA AC Milan 06-07') + 
+            '&images=' + 
+            encodeURIComponent('IMG_3076.jpeg,kaka-model.jpeg') + 
+            '&desc=' + 
+            encodeURIComponent('KAKA AC Milan 06-07 | Price: $42.99 | Premium Retro Jersey')"
+
             class="border border-white text-white px-4 py-1 text-sm hover:bg-white hover:text-black transition">
             Buy
           </button>
+
         </div>
       </div>
 

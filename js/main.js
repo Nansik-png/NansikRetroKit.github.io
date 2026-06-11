@@ -1,6 +1,4 @@
-// Main functionality for cart and product pages
-
-// ============= PRODUCT PAGE =============
+/ ============= PRODUCT PAGE =============
 function initProductPage() {
   const params = new URLSearchParams(window.location.search);
   const productId = params.get("id") || productSlug(params.get("name"));
@@ -29,10 +27,28 @@ function initProductPage() {
 
   if (mainImage) {
     mainImage.src = images[0];
+    mainImage.classList.add("zoomable");
     mainImage.onerror = function () {
       this.onerror = null;
       this.src = "images/redkappa.jpeg";
     };
+    mainImage.addEventListener("click", (event) => {
+      if (!mainImage) return;
+      const rect = mainImage.getBoundingClientRect();
+      const offsetX = event.clientX - rect.left;
+      const offsetY = event.clientY - rect.top;
+      const originX = (offsetX / rect.width) * 100;
+      const originY = (offsetY / rect.height) * 100;
+
+      const isZoomed = mainImage.classList.toggle("zoomed");
+      if (isZoomed) {
+        mainImage.style.transformOrigin = `${originX}% ${originY}%`;
+        mainImage.style.transform = "scale(1.9)";
+      } else {
+        mainImage.style.transformOrigin = "center center";
+        mainImage.style.transform = "scale(1)";
+      }
+    });
   }
 
   if (document.getElementById("productName")) {
@@ -248,8 +264,40 @@ function initiateStripeCheckout() {
   });
 }
 
+// ============= EVENT BINDING =============
+function bindPageActions() {
+  document.querySelectorAll("[data-action=quick-add]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const target = event.currentTarget;
+      const productId = target.getAttribute("data-product-id");
+      if (!productId) return;
+      quickAdd(productId, target);
+    });
+  });
+
+  document.querySelectorAll("[data-action=view-product]").forEach((element) => {
+    element.addEventListener("click", (event) => {
+      const target = event.currentTarget;
+      const name = target.getAttribute("data-product-name");
+      const image = target.getAttribute("data-product-image");
+      const desc = target.getAttribute("data-product-desc");
+      if (!name || !image || !desc) return;
+      goToProduct(name, image, desc);
+    });
+  });
+
+  document.querySelectorAll("[data-action=navigate]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const target = event.currentTarget;
+      const href = target.getAttribute("data-href");
+      if (href) window.location.href = href;
+    });
+  });
+}
+
 // ============= INITIALIZATION =============
 document.addEventListener("DOMContentLoaded", () => {
+  bindPageActions();
   if (document.getElementById("productName")) {
     initProductPage();
   }

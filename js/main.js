@@ -1,4 +1,6 @@
-/ ============= PRODUCT PAGE =============
+// Main functionality for cart and product pages
+
+// ============= PRODUCT PAGE =============
 function initProductPage() {
   const params = new URLSearchParams(window.location.search);
   const productId = params.get("id") || productSlug(params.get("name"));

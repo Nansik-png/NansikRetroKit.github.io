@@ -259,7 +259,22 @@ a { color: inherit; }
   z-index: 1;
 }
 @media (min-width: 768px) { .product-wrap { grid-template-columns: 1fr 1fr; align-items: center; } }
-#mainImage { width: 100%; background: var(--cream-card); border-radius: 0.6rem; padding: 6%; }
+.product-image-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.6rem;
+  background: var(--cream-card);
+  padding: 6%;
+}
+#mainImage {
+  width: 100%;
+  display: block;
+  transition: transform 0.3s ease, transform-origin 0.3s ease;
+  cursor: zoom-in;
+}
+#mainImage.zoomed {
+  cursor: zoom-out;
+}
 #prevBtn, #nextBtn {
   background: var(--cream-card);
   border: 1px solid var(--ink);

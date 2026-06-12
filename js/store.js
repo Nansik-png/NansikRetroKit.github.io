@@ -1,3 +1,7 @@
+// Cart cache to avoid repeated JSON parsing
+let cartCache = null;
+let cartCacheTimestamp = 0;
+
 const PRODUCTS = {
   "kaka-ac-milan-06-07": {
     id: "kaka-ac-milan-06-07",
@@ -95,6 +99,11 @@ function productUrl(id) {
 }
 
 function getCart() {
+  // Return cached cart if available (cache is short-lived, ~50ms)
+  if (cartCache && Date.now() - cartCacheTimestamp < 50) {
+    return cartCache;
+  }
+
   const saved = JSON.parse(localStorage.getItem("cart") || "[]");
 
   const normalized = saved.map((item) => {
@@ -113,7 +122,7 @@ function getCart() {
     };
   });
 
-  return normalized.reduce((items, item) => {
+  const deduped = normalized.reduce((items, item) => {
     const existing = items.find((savedItem) => savedItem.id === item.id);
     if (existing) {
       existing.quantity += item.quantity;
@@ -122,24 +131,47 @@ function getCart() {
     }
     return items;
   }, []);
+
+  // Cache the result
+  cartCache = deduped;
+  cartCacheTimestamp = Date.now();
+
+  return deduped;
 }
 
 function saveCart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
+  // Invalidate cache
+  cartCache = null;
+  cartCacheTimestamp = 0;
   updateCartBadges();
 }
 
-function cartItemCount(cart = getCart()) {
-  return cart.reduce((sum, item) => sum + item.quantity, 0);
+function cartItemCount(cart = null) {
+  const c = cart || getCart();
+  return c.reduce((sum, item) => sum + item.quantity, 0);
 }
 
-function cartTotal(cart = getCart()) {
-  return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+function cartTotal(cart = null) {
+  const c = cart || getCart();
+  return c.reduce((sum, item) => sum + item.price * item.quantity, 0);
+}
+
+// Cache cart badge elements
+let cachedBadges = null;
+
+function getCartBadges() {
+  if (!cachedBadges) {
+    cachedBadges = document.querySelectorAll("[data-cart-count], #cartCount");
+  }
+  return cachedBadges;
 }
 
 function updateCartBadges() {
-  document.querySelectorAll("[data-cart-count], #cartCount").forEach((badge) => {
-    badge.textContent = cartItemCount();
+  const badges = getCartBadges();
+  const count = cartItemCount();
+  badges.forEach((badge) => {
+    badge.textContent = count;
     badge.classList.add("cart-count-pop");
     window.setTimeout(() => badge.classList.remove("cart-count-pop"), 250);
   });

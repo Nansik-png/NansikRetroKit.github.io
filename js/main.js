@@ -116,6 +116,16 @@ function initCartPage() {
 
   if (!container || !totalPriceEl || !checkoutBtn) return;
 
+  // Debounce render calls to prevent excessive DOM updates
+  let renderTimeout = null;
+  function scheduleRender() {
+    if (renderTimeout) clearTimeout(renderTimeout);
+    renderTimeout = setTimeout(() => {
+      renderCart();
+      renderTimeout = null;
+    }, 0);
+  }
+
   function renderCart() {
     cart = getCart();
     container.innerHTML = "";
@@ -143,41 +153,51 @@ function initCartPage() {
           <p class="text-sm font-semibold mt-1">${formatMoney(item.price * item.quantity)}</p>
         </div>
         <div class="flex items-center gap-2">
-          <button data-action="decrease" class="w-9 h-9 border hover:bg-black hover:text-white transition" aria-label="Decrease ${item.name} quantity">-</button>
-          <span class="w-10 text-center font-semibold">${item.quantity}</span>
-          <button data-action="increase" class="w-9 h-9 border hover:bg-black hover:text-white transition" aria-label="Increase ${item.name} quantity">+</button>
+          <button data-action="decrease" data-item-id="${item.id}" class="w-9 h-9 border hover:bg-black hover:text-white transition" aria-label="Decrease ${item.name} quantity">-</button>
+          <span class="w-10 text-center font-semibold" data-quantity="${item.id}">${item.quantity}</span>
+          <button data-action="increase" data-item-id="${item.id}" class="w-9 h-9 border hover:bg-black hover:text-white transition" aria-label="Increase ${item.name} quantity">+</button>
         </div>
-        <button data-action="remove" class="border border-red-500 text-red-500 px-3 py-2 text-sm hover:bg-red-500 hover:text-white transition rounded">
+        <button data-action="remove" data-item-id="${item.id}" class="border border-red-500 text-red-500 px-3 py-2 text-sm hover:bg-red-500 hover:text-white transition rounded">
           Remove
         </button>
       `;
 
-      div.querySelector('[data-action="decrease"]').onclick = () => {
-        if (item.quantity === 1) {
-          removeFromCart(item.id);
-        } else {
-          setCartQuantity(item.id, item.quantity - 1);
-        }
-        renderCart();
-      };
-
-      div.querySelector('[data-action="increase"]').onclick = () => {
-        setCartQuantity(item.id, item.quantity + 1);
-        renderCart();
-      };
-
-      div.querySelector('[data-action="remove"]').onclick = () => {
-        removeFromCart(item.id);
-        renderCart();
-      };
-
       container.appendChild(div);
     });
 
+    // Update total price
     totalPriceEl.innerText = formatMoney(cartTotal(cart));
   }
 
   renderCart();
+
+  // Use event delegation instead of attaching listeners to each button
+  container.addEventListener("click", (event) => {
+    const btn = event.target.closest("button[data-action]");
+    if (!btn) return;
+
+    const action = btn.getAttribute("data-action");
+    const itemId = btn.getAttribute("data-item-id");
+
+    if (action === "decrease") {
+      const item = cart.find(i => i.id === itemId);
+      if (item && item.quantity === 1) {
+        removeFromCart(itemId);
+      } else if (item) {
+        setCartQuantity(itemId, item.quantity - 1);
+      }
+      scheduleRender();
+    } else if (action === "increase") {
+      const item = cart.find(i => i.id === itemId);
+      if (item) {
+        setCartQuantity(itemId, item.quantity + 1);
+      }
+      scheduleRender();
+    } else if (action === "remove") {
+      removeFromCart(itemId);
+      scheduleRender();
+    }
+  });
 
   const checkoutResult = new URLSearchParams(window.location.search).get("checkout");
   if (checkoutResult === "success") {
@@ -268,32 +288,33 @@ function initiateStripeCheckout() {
 
 // ============= EVENT BINDING =============
 function bindPageActions() {
-  document.querySelectorAll("[data-action=quick-add]").forEach((button) => {
-    button.addEventListener("click", (event) => {
-      const target = event.currentTarget;
-      const productId = target.getAttribute("data-product-id");
-      if (!productId) return;
-      quickAdd(productId, target);
-    });
+  // Use event delegation for quick-add buttons
+  document.addEventListener("click", (event) => {
+    const btn = event.target.closest("[data-action=quick-add]");
+    if (btn) {
+      const productId = btn.getAttribute("data-product-id");
+      if (productId) quickAdd(productId, btn);
+    }
   });
 
-  document.querySelectorAll("[data-action=view-product]").forEach((element) => {
-    element.addEventListener("click", (event) => {
-      const target = event.currentTarget;
-      const name = target.getAttribute("data-product-name");
-      const image = target.getAttribute("data-product-image");
-      const desc = target.getAttribute("data-product-desc");
-      if (!name || !image || !desc) return;
-      goToProduct(name, image, desc);
-    });
+  // Use event delegation for view-product
+  document.addEventListener("click", (event) => {
+    const element = event.target.closest("[data-action=view-product]");
+    if (element) {
+      const name = element.getAttribute("data-product-name");
+      const image = element.getAttribute("data-product-image");
+      const desc = element.getAttribute("data-product-desc");
+      if (name && image && desc) goToProduct(name, image, desc);
+    }
   });
 
-  document.querySelectorAll("[data-action=navigate]").forEach((button) => {
-    button.addEventListener("click", (event) => {
-      const target = event.currentTarget;
-      const href = target.getAttribute("data-href");
+  // Use event delegation for navigate
+  document.addEventListener("click", (event) => {
+    const btn = event.target.closest("[data-action=navigate]");
+    if (btn) {
+      const href = btn.getAttribute("data-href");
       if (href) window.location.href = href;
-    });
+    }
   });
 }
 

@@ -3,8 +3,17 @@
 // ============= PRODUCT PAGE =============
 function initProductPage() {
   const params = new URLSearchParams(window.location.search);
-  const productId = params.get("id") || productSlug(params.get("name"));
-  const product = getProduct(productId);
+  let productId = params.get("id") || productSlug(params.get("name"));
+  let product = getProduct(productId);
+
+  if (!product && params.get("name")) {
+    const requestedName = decodeURIComponent(params.get("name"));
+    product = Object.values(PRODUCTS).find((item) => item.name === requestedName) || null;
+    if (product) {
+      productId = product.id;
+    }
+  }
+
   const name = product 
     ? product.name 
     : (params.get("name") ? decodeURIComponent(params.get("name")) : "Unnamed Product");
@@ -83,20 +92,41 @@ function initProductPage() {
   const cartStatus = document.getElementById("cartStatus");
 
   if (addToCartBtn) {
+    const sizeChooser = document.getElementById("sizeChooser");
+
+    // Show size chooser when Add to Cart is clicked
     addToCartBtn.onclick = function () {
-      const added = addToCart(productId);
-      if (!added) return;
-
-      addToCartBtn.textContent = "Added";
-      addToCartBtn.classList.add("bg-black", "text-white");
-      if (cartStatus) cartStatus.textContent = `${added.name} is in your cart.`;
-      if (goToCartBtn) goToCartBtn.classList.remove("hidden");
-
-      window.setTimeout(() => {
-        addToCartBtn.textContent = "Add to Cart";
-        addToCartBtn.classList.remove("bg-black", "text-white");
-      }, 1000);
+      if (sizeChooser) {
+        sizeChooser.classList.remove("hidden");
+        sizeChooser.setAttribute("aria-hidden", "false");
+        const first = sizeChooser.querySelector(".size-option");
+        if (first) first.focus();
+      }
     };
+
+    // When a size button is clicked, add item with that size
+    document.querySelectorAll(".size-option").forEach((btn) => {
+      btn.onclick = function () {
+        const selectedSize = this.getAttribute("data-size") || "M";
+        const added = addToCart(productId, 1, selectedSize);
+        if (!added) return;
+
+        addToCartBtn.textContent = "Added";
+        addToCartBtn.classList.add("bg-black", "text-white");
+        if (cartStatus) cartStatus.textContent = `${added.name} (${selectedSize}) is in your cart.`;
+        if (goToCartBtn) goToCartBtn.classList.remove("hidden");
+
+        if (sizeChooser) {
+          sizeChooser.classList.add("hidden");
+          sizeChooser.setAttribute("aria-hidden", "true");
+        }
+
+        window.setTimeout(() => {
+          addToCartBtn.textContent = "Add to Cart";
+          addToCartBtn.classList.remove("bg-black", "text-white");
+        }, 1000);
+      };
+    });
   }
 
   if (goToCartBtn) {
@@ -139,6 +169,7 @@ function initCartPage() {
         <img src="${item.image}" class="w-24 h-24 object-cover rounded" alt="${item.name}" onerror="this.onerror=null;this.src='images/redkappa.jpeg'">
         <div class="flex-1 min-w-0">
           <p class="font-semibold text-lg">${item.name}</p>
+          ${item.size ? `<p class="text-gray-600 text-sm">Size: ${item.size}</p>` : ""}
           <p class="text-gray-600 text-sm">${formatMoney(item.price)} each</p>
           <p class="text-sm font-semibold mt-1">${formatMoney(item.price * item.quantity)}</p>
         </div>
@@ -190,11 +221,43 @@ function initCartPage() {
 
   if (checkoutBtn) {
     checkoutBtn.onclick = async () => {
+      cart = getCart();
       if (cart.length === 0) {
         if (checkoutStatus) checkoutStatus.textContent = "Your cart is empty.";
         return;
       }
-      initiateStripeCheckout();
+
+      checkoutBtn.disabled = true;
+      checkoutBtn.textContent = "Opening secure checkout...";
+      if (checkoutStatus) checkoutStatus.textContent = `Redirecting securely for ${formatMoney(cartTotal(cart))}.`;
+
+      try {
+        // Send only what we bought; the server decides the price.
+        const response = await fetch("/api/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            origin: window.location.origin,
+            items: cart.map((item) => ({
+              id: item.baseId,
+              size: item.size,
+              quantity: item.quantity
+            }))
+          })
+        });
+
+        const data = await response.json();
+        if (!response.ok || !data.url) {
+          throw new Error(data.error || "Checkout failed. Please try again.");
+        }
+
+        // Stripe-hosted page: handles the card form and Apple Pay safely.
+        window.location.href = data.url;
+      } catch (err) {
+        if (checkoutStatus) checkoutStatus.textContent = err.message || "Could not start checkout.";
+        checkoutBtn.disabled = false;
+        checkoutBtn.textContent = "Proceed to Checkout";
+      }
     };
   }
 }
@@ -216,54 +279,13 @@ function quickAdd(productId, btn) {
 
 // ============= PRODUCT NAVIGATION =============
 function goToProduct(name, image, desc) {
-  const id = productSlug(name);
-  window.location.href = getProduct(id) ? productUrl(id) : 'product.html?' +
+  const fallbackId = productSlug(name);
+  const product = getProduct(fallbackId) || Object.values(PRODUCTS).find((item) => item.name === name);
+  const id = product ? product.id : fallbackId;
+  window.location.href = product ? productUrl(id) : 'product.html?' +
     'name=' + encodeURIComponent(name) +
     '&image=' + encodeURIComponent(image) +
     '&desc=' + encodeURIComponent(desc);
-}
-
-// ============= STRIPE CHECKOUT =============
-function initiateStripeCheckout() {
-  const checkoutBtn = document.getElementById("checkoutBtn");
-  const checkoutStatus = document.getElementById("checkoutStatus");
-  const cart = getCart();
-
-  if (cart.length === 0) {
-    if (checkoutStatus) checkoutStatus.textContent = "Your cart is empty.";
-    return;
-  }
-
-  const config = window.NANSIK_STRIPE || {};
-  const missingConfig = !config.publishableKey || config.publishableKey.includes("REPLACE");
-  const lineItems = cart.map((item) => ({
-    price: config.prices ? config.prices[item.id] : "",
-    quantity: item.quantity
-  }));
-  const missingPrices = lineItems.some((item) => !item.price || item.price.includes("REPLACE"));
-
-  if (missingConfig || missingPrices) {
-    if (checkoutStatus) checkoutStatus.textContent = "Add your Stripe publishable key and Price IDs in js/stripe-config.js before checkout can go live.";
-    return;
-  }
-
-  if (checkoutBtn) checkoutBtn.disabled = true;
-  if (checkoutBtn) checkoutBtn.textContent = "Opening Stripe...";
-  if (checkoutStatus) checkoutStatus.textContent = `Redirecting securely for ${formatMoney(cartTotal(cart))}.`;
-
-  const stripe = Stripe(config.publishableKey);
-  stripe.redirectToCheckout({
-    lineItems,
-    mode: "payment",
-    successUrl: config.successUrl,
-    cancelUrl: config.cancelUrl
-  }).then((result) => {
-    if (result.error) {
-      if (checkoutStatus) checkoutStatus.textContent = result.error.message;
-      if (checkoutBtn) checkoutBtn.disabled = false;
-      if (checkoutBtn) checkoutBtn.textContent = "Proceed to Checkout";
-    }
-  });
 }
 
 // ============= EVENT BINDING =============

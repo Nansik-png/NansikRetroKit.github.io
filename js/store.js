@@ -8,35 +8,35 @@ const PRODUCTS = {
   },
   "juventus-pink": {
     id: "juventus-pink",
-    name: "Juventus Pink",
+    name: "Juventus 97-98",
     image: "images/juventuspink.PNG",
     price: 29.99,
     description: "Premium Retro Jersey"
   },
   "brazil-jersey": {
     id: "brazil-jersey",
-    name: "Brazil Jersey",
+    name: "Brazil 98-99 X R9",
     image: "images/brazil.PNG",
     price: 34.99,
     description: "Iconic Retro Jersey"
   },
   "japan-jersey": {
     id: "japan-jersey",
-    name: "Japan Jersey",
+    name: "Japan Concept Jersey",
     image: "images/japan.PNG",
     price: 32.99,
     description: "Premium Retro Jersey"
   },
   "maradona-jersey": {
     id: "maradona-jersey",
-    name: "Maradona Jersey",
+    name: "Maradona x Argentina",
     image: "images/maradona.PNG",
     price: 39.99,
     description: "Legend Retro Jersey"
   },
   "santos-jersey": {
     id: "santos-jersey",
-    name: "Santos Jersey",
+    name: "Santos x Neymar JR 12-13",
     image: "images/santos.PNG",
     price: 35.99,
     description: "Classic Retro Jersey"
@@ -98,16 +98,33 @@ function getCart() {
   const saved = JSON.parse(localStorage.getItem("cart") || "[]");
 
   const normalized = saved.map((item) => {
-    const id = item.id || productSlug(item.name);
-    const knownProduct = getProduct(id);
+    // support two storage shapes:
+    // - legacy/composite id: { id: 'product-id::M', ... }
+    // - preferred shape: { id: 'product-id', size: 'M', ... }
+    let baseId = null;
+    let size = null;
+
+    if (item && item.id && String(item.id).includes("::") && !item.size) {
+      const parts = String(item.id).split("::");
+      baseId = parts[0];
+      size = parts[1] || "M";
+    } else {
+      baseId = item.id || productSlug(item.name);
+      size = item.size || "M";
+    }
+
+    const id = `${baseId}::${size}`;
+    const knownProduct = getProduct(baseId);
     const priceMatch = String(item.desc || "").match(/Price:\s*\$(\d+(\.\d+)?)/);
     const price = knownProduct ? knownProduct.price : Number(priceMatch ? priceMatch[1] : item.price || 0);
 
     return {
       id,
+      baseId,
+      size,
       name: knownProduct ? knownProduct.name : item.name,
       image: assetImagePath(knownProduct ? knownProduct.image : item.image),
-      desc: knownProduct ? productDesc(knownProduct) : item.desc,
+      desc: knownProduct ? `${productDesc(knownProduct)} | Size: ${size}` : item.desc,
       price,
       quantity: Math.max(1, Number(item.quantity || 1))
     };
@@ -125,7 +142,18 @@ function getCart() {
 }
 
 function saveCart(cart) {
-  localStorage.setItem("cart", JSON.stringify(cart));
+  // Persist in a compact shape: base id + size fields (not composite id)
+  const toSave = (cart || []).map((item) => ({
+    id: item.baseId || (item.id ? String(item.id).split("::")[0] : undefined),
+    size: item.size || (item.id && String(item.id).includes("::") ? String(item.id).split("::")[1] : undefined),
+    quantity: item.quantity || 1,
+    name: item.name,
+    image: item.image,
+    desc: item.desc,
+    price: item.price
+  }));
+
+  localStorage.setItem("cart", JSON.stringify(toSave));
   updateCartBadges();
 }
 
@@ -145,21 +173,24 @@ function updateCartBadges() {
   });
 }
 
-function addToCart(id, quantity = 1) {
+function addToCart(id, quantity = 1, size = "M") {
   const product = getProduct(id);
   if (!product) return null;
 
   const cart = getCart();
-  const existing = cart.find((item) => item.id === id);
+  const key = `${id}::${size}`;
+  const existing = cart.find((item) => item.id === key);
 
   if (existing) {
     existing.quantity += quantity;
   } else {
     cart.push({
-      id: product.id,
+      id: key,
+      baseId: id,
+      size,
       name: product.name,
       image: product.image,
-      desc: productDesc(product),
+      desc: `${productDesc(product)} | Size: ${size}`,
       price: product.price,
       quantity
     });
@@ -182,6 +213,21 @@ function removeFromCart(id) {
 
 function clearCart() {
   saveCart([]);
+}
+
+// Orders (simple in-site storage)
+function getOrders() {
+  return JSON.parse(localStorage.getItem('orders') || '[]');
+}
+
+function saveOrder(order) {
+  const existing = getOrders();
+  existing.push(order);
+  localStorage.setItem('orders', JSON.stringify(existing));
+}
+
+function getOrder(id) {
+  return getOrders().find(o => o.id === id) || null;
 }
 
 document.addEventListener("DOMContentLoaded", updateCartBadges);

@@ -12,7 +12,7 @@
   <!-- Header -->
   <header class="site-header">
     <span class="site-tagline">(retro football kits)</span>
-    <h1 class="site-wordmark">NANSIK RETRO KITS</h1>
+    <h1 class="site-wordmark"><a href="index.html">NANSIK RETRO KITS</a></h1>
     <nav class="site-nav">
       <a href="shop.html">Shop</a>
       <a href="about.html">About</a>
@@ -23,11 +23,19 @@
   <!-- Product layout -->
   <section class="product-wrap">
 
-    <!-- Image slider -->
-    <div class="product-image-frame relative w-full">
-      <img id="mainImage" alt="Product Image">
-      <button id="prevBtn" class="absolute left-2 top-1/2 transform -translate-y-1/2 px-3 py-1 hidden">&larr;</button>
-      <button id="nextBtn" class="absolute right-2 top-1/2 transform -translate-y-1/2 px-3 py-1 hidden">&rarr;</button>
+    <!-- Image carousel -->
+    <div class="product-image-col">
+      <div class="product-image-frame">
+        <img id="mainImage" alt="Product Image">
+        <button id="prevBtn" class="carousel-btn carousel-btn--prev hidden" aria-label="Previous image">&larr;</button>
+        <button id="nextBtn" class="carousel-btn carousel-btn--next hidden" aria-label="Next image">&rarr;</button>
+      </div>
+
+      <!-- Dot indicators -->
+      <div id="carouselDots" class="carousel-dots hidden"></div>
+
+      <!-- Thumbnail strip -->
+      <div id="thumbnailStrip" class="thumbnail-strip hidden"></div>
     </div>
 
     <!-- Info -->
@@ -36,8 +44,18 @@
       <p id="productDesc" class="desc"></p>
 
       <button id="addToCart" class="btn btn--solid">Add to Cart</button>
-      <p id="cartStatus" class="text-sm mt-3" style="min-height:1.25rem;color:var(--ink-soft)"></p>
 
+      <!-- Size chooser — shown after clicking Add to Cart -->
+      <div id="sizeChooser" class="size-chooser hidden" aria-hidden="true" aria-label="Select a size">
+        <button class="size-option" data-size="XS">XS</button>
+        <button class="size-option" data-size="S">S</button>
+        <button class="size-option" data-size="M">M</button>
+        <button class="size-option" data-size="L">L</button>
+        <button class="size-option" data-size="XL">XL</button>
+        <button class="size-option" data-size="XXL">XXL</button>
+      </div>
+
+      <p id="cartStatus" class="text-sm mt-3" style="min-height:1.25rem;color:var(--ink-soft)"></p>
       <button id="goToCart" class="btn mt-4 hidden">Go to Cart</button>
     </div>
 

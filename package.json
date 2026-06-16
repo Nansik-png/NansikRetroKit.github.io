@@ -1,9 +1,0 @@
-{
-  "name": "nansik-retro-kit",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Nansik Retro Kit storefront with Stripe Checkout (card + Apple Pay).",
-  "dependencies": {
-    "stripe": "^17.7.0"
-  }
-}
